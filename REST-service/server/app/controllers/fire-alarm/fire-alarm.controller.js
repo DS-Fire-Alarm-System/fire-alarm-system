@@ -12,7 +12,7 @@ const createFireAlarm = (req, res) => {
 
     FireAlarmService.create(newFireAlarm, (err, result) => {
         if (err) {
-            return res.status(400).json({ status: "error" });
+            return res.status(400).json({ status: "error", data: {} });
         }
 
         return res.status(201).json({ status: "success", data: result });
@@ -22,7 +22,7 @@ const createFireAlarm = (req, res) => {
 const getFireAlarmList = (req, res) => {
     FireAlarmService.find({}, (err, result) => {
         if (err) {
-            return res.status(400).json({ status: "error" });
+            return res.status(400).json({ status: "error", data: {} });
         }
 
         return res.status(200).json({ status: "success", data: result });
@@ -32,7 +32,7 @@ const getFireAlarmList = (req, res) => {
 const getFireAlarmById = (req, res) => {
     FireAlarmService.findOne({ _id: req.params.id }, (err, result) => {
         if (err) {
-            return res.status(400).json({ status: "error" });
+            return res.status(400).json({ status: "error", data: {} });
         }
 
         return res.status(200).json({ status: "success", data: result });
@@ -50,7 +50,7 @@ const updateFireAlarm = (req, res) => {
 
     FireAlarmService.findOne({ _id: req.params.id }, (err, result) => {
         if (err) {
-            return res.status(400).json({ status: "error" });
+            return res.status(400).json({ status: "error", data: {} });
         } else {
             if (result) {
                 const updatedObject = Object.assign(result, updateFireAlarm);
@@ -58,7 +58,7 @@ const updateFireAlarm = (req, res) => {
 
                 updatedObject.save((err, data) => {
                     if (err) {
-                        return res.status(400).json({ status: "error" });
+                        return res.status(400).json({ status: "error", data: {} });
                     }
 
                     return res.status(201).json({ status: "success", data: data });
@@ -71,10 +71,10 @@ const updateFireAlarm = (req, res) => {
 const deleteFireAlarm = (req, res) => {
     FireAlarmService.delete({ _id: req.params.id }, (err, result) => {
         if (err) {
-            return res.status(400).json({ status: "error" });
+            return res.status(400).json({ status: "error", data: {} });
         }
 
-        return res.status(200).json({ status: "success", data: true });
+        return res.status(200).json({ status: "success", data: {} });
     })
 };
 
