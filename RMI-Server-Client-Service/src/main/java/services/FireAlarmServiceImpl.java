@@ -12,8 +12,10 @@ import javax.ws.rs.core.Response;
 
 import dtos.Auth;
 import dtos.FireAlarmSensor;
+import dtos.Registration;
 import interfaces.IFireAlarmService;
 import response.models.AuthResponse;
+import response.models.RegistrationResponse;
 import response.models.FireAlarmSensorMultipleResponse;
 import response.models.FireAlarmSensorSingleResponse;
 
@@ -23,6 +25,21 @@ public class FireAlarmServiceImpl extends UnicastRemoteObject implements IFireAl
 	
 	public FireAlarmServiceImpl() throws RemoteException {
 		
+	}
+	
+	public RegistrationResponse register(Registration reg) throws RemoteException {
+		try {
+			client = ClientBuilder.newClient();
+			Response response = client.target("http://localhost:4000/api/users").request().post(Entity.json(reg));
+			RegistrationResponse regResponse = response.readEntity(RegistrationResponse.class);
+			return regResponse;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			client.close();
+		}
+		
+		return null;
 	}
 	
 	public AuthResponse login(Auth auth) throws RemoteException {
