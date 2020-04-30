@@ -1,6 +1,7 @@
 # compiled output
 /dist
 REST-service/node_modules
+Simulate-application/node_modules
 
 # Logs
 logs

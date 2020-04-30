@@ -1,0 +1,13 @@
+.defaultInputWrapper {
+    font-size: 15px !important;
+}
+
+.defaultInputWrapper > label {
+    font-size: 15px !important;
+    color: #949494;
+    line-height: 0.9 !important;
+}
+
+.defaultInputWrapper > label > span {
+    color: #ff0000;
+}

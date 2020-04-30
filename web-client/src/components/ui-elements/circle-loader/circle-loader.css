@@ -1,0 +1,17 @@
+.pageLoader{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background:rgba(0,0,0,0.5) !important;
+    width: 100%;
+    position: fixed;
+    z-index: 99999999999999999;
+}
+
+.pageLoader > .loader {
+    position: absolute;
+    left: 48%;
+    top: 40%;
+    color: #ffffff !important;
+}

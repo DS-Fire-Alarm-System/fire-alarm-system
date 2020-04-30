@@ -1,0 +1,17 @@
+
+.defaultFlashContent  > i {
+    font-size: 17px;
+    margin-right: 10px;
+}
+
+.defaultFlashMessageBox > .messageBoxTxt {
+    font-size: 13px;
+}
+
+.successFlashMessage > div {
+    background-color: #43A047;
+}
+
+.errorFlashMessage > div {
+    background-color: #D32F2F;
+}

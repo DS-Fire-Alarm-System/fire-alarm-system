@@ -1,0 +1,20 @@
+.tableHeader {
+    background: #212121 !important;
+}
+
+.headerValue {
+    color: #FFFFFF !important;
+}
+
+.alertClass {
+    background: #D50000 !important;
+}
+
+.alertClass > td {
+    color: #FFFFFF !important;
+    font-weight: 500;
+}
+
+.normalClass > td {
+    font-weight: 500;
+}

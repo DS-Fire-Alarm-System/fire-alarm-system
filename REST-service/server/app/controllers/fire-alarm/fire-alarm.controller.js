@@ -48,22 +48,11 @@ const updateFireAlarm = (req, res) => {
         status: req.body.status,
     };
 
-    FireAlarmService.findOne({ _id: req.params.id }, (err, result) => {
+    FireAlarmService.updateFireAlarm(updateFireAlarm, req.params.id, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });
         } else {
-            if (result) {
-                const updatedObject = Object.assign(result, updateFireAlarm);
-                updatedObject.updated_at = new Date();
-
-                updatedObject.save((err, data) => {
-                    if (err) {
-                        return res.status(400).json({ status: "error", data: {} });
-                    }
-
-                    return res.status(201).json({ status: "success", data: data });
-                })
-            }
+            return res.status(201).json({ status: "success", data: result });
         }
     })
 };

@@ -1,0 +1,15 @@
+.header {
+    background: #3E2723;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+.header a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.header > h1 {
+    font-weight: 500;
+}
