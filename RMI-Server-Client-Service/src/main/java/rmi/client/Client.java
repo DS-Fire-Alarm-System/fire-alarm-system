@@ -21,7 +21,7 @@ public class Client implements Serializable {
 		
 		try {
 			// Looking up the registry for the remote object 
-			this.stub = (IFireAlarmService) Naming.lookup("rmi://localhost:1099/FireAlarmService");
+			this.stub = (IFireAlarmService) Naming.lookup("rmi://localhost:5099/FireAlarmService");
 			
 		} catch (Exception e) {
 			
