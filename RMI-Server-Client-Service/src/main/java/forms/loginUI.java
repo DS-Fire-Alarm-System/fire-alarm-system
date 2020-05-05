@@ -185,21 +185,25 @@ public class loginUI extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         
+    	// set authentication details
         Auth auth = new Auth();
         auth.setUsername(txtUserName.getText().trim().toString());
         auth.setPassword(new String(txtPassword.getPassword()).trim());
       
         
         try {
+    		//  get the response for login success or fail      		
         	AuthResponse res = this.stub.login(auth);
         	String check = res.getMessage();
             JOptionPane.showMessageDialog(null, check);
+            
+            // if login success redirect to maiUI           
         	if(check.equalsIgnoreCase("Authorized")) {
                 this.setVisible(false);
                 String[] user = new String[1];
                 user[0] = auth.getUsername();
                 mainUI.main(user);
-           } else {
+           } else { // if login failure show error messaage
                       JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
            }
 		} catch (Exception e) {

@@ -1,7 +1,7 @@
 package dtos;
 
 import java.io.Serializable;
-
+// set authentication details 
 public class Auth implements Serializable {
 
 	private String username;

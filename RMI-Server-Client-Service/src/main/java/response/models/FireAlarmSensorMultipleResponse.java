@@ -5,6 +5,7 @@ import java.util.List;
 
 import dtos.FireAlarmSensor;
 
+// store multiple response 
 public class FireAlarmSensorMultipleResponse implements Serializable {
 	
 	private String status;

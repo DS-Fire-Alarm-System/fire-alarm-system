@@ -19,9 +19,10 @@ public class RMIServer extends FireAlarmServiceImpl {
 	public static void main(String[] args) throws RemoteException {
         try {
         	
-        	 
+        	// create register for relavent port number 
             Registry registry = LocateRegistry.createRegistry(port);
             
+            // bind the FireAlarmService in registry
             registry.rebind("FireAlarmService", new FireAlarmServiceImpl());  
             System.out.println("Server is started"); 
         } catch (Exception ex) { 

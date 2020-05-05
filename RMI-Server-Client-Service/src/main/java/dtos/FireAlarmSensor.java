@@ -2,6 +2,7 @@ package dtos;
 
 import java.io.Serializable;
 
+// model class for fire alarm sensor details
 public class FireAlarmSensor implements Serializable {
     
 	private String _id;

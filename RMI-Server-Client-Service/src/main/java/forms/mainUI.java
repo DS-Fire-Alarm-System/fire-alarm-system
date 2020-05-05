@@ -13,8 +13,10 @@ import java.util.TimerTask;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import dtos.EmailSms;
 import dtos.FireAlarmSensor;
 import interfaces.IFireAlarmService;
+import response.models.EmailSmsResponse;
 import response.models.FireAlarmSensorMultipleResponse;
 import rmi.client.Client;
 import javax.swing.GroupLayout.Alignment;
@@ -35,34 +37,97 @@ import java.awt.event.ActionEvent;
 
 /**
  *
- * @author Supun Randima
+ *  @author Supun Randima Wijekoon
  */
 
 
 public class mainUI extends javax.swing.JFrame {
 
     public static String user;
+    
     private IFireAlarmService stub = null;
 	private Client client = new Client();
 	private List<FireAlarmSensor> list;
+	
+	private javax.swing.JTable tblAlerts = new javax.swing.JTable();
+    private static javax.swing.JTable tblSensors = new javax.swing.JTable();
+    private javax.swing.JLabel activeSensors = new javax.swing.JLabel();
     /**
      * Creates new form mainUI
      */
      public mainUI() {
+    	// get RMI client
         this.stub = client.getStub();
-        this.getData();
+        this.getAndSetData();
+        this.refreshData();
         initComponents();
+        
+        activeSensors.setForeground(Color.WHITE);
+        activeSensors.setFont(new Font("Sitka Heading", Font.BOLD, 14));
     }
      
-    public void getData() {
+    public void getAndSetData() {
+    	// setting tables values
     	try {
     		FireAlarmSensorMultipleResponse res = this.stub.getFireAlarmSensorList();
         	this.list = res.getData();
         	
+        	// columns array for storing table columns names        
+            String[] cols = {"Sensor", "Floor No", "Room No", "CO2 Level", "Smoke Level", "Status"};
+            // table model for all sensors table
+            final DefaultTableModel model = new DefaultTableModel(cols, 0);
+            // table model for alert sensors table        
+            final DefaultTableModel alertsModel = new DefaultTableModel(cols, 0);
+            
+            // assign all sensors for sensors tables
+            for (FireAlarmSensor s : this.list) {
+            	Object[] row = {s.get_id(), s.getFloor_no(), s.getRoom_no(), s.getCo2_level(), s.getSmoke_level(), s.isStatus()};
+            	// add sensors for all sensors table
+            	model.addRow(row);
+            	
+            	// if co2 level is high add the sensor in alerts table 
+            	if((s.getCo2_level() >= 5) || (s.getSmoke_level() >= 5)) {
+            		alertsModel.addRow(row);
+            		
+            		EmailSms emailSms = new EmailSms();
+            		emailSms.setFloor(s.getFloor_no());
+            		emailSms.setRoom(s.getRoom_no());
+            		
+            		// Send Email and SMS to Admin
+            		this.stub.sendEmail(emailSms);
+            		this.stub.sendSms(emailSms);
+            	}
+            }
+            
+            // set alerts to alert table
+            tblAlerts.setModel(alertsModel);
+            
+            // display all sensors
+            tblSensors.setModel(model);
+            
+            //set active sensors
+            activeSensors.setText(Integer.toString(this.list.size()));
+        	
         	System.out.println(res.getStatus());
     	} catch (Exception e) {
 			// TODO: handle exception
+    		System.out.println(e);
 		}
+    }
+    
+//  ##########################              refresh form                 ###############################
+    public void refreshData() {
+    	Timer time = new Timer();
+    	TimerTask timerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				getAndSetData();
+			}
+		};
+		
+		// refresh form in every 15 seconds
+		time.scheduleAtFixedRate(timerTask, 15000, 15000);
     }
  
     /**
@@ -78,17 +143,13 @@ public class mainUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel6.setForeground(Color.WHITE);
-        activeSensors = new javax.swing.JLabel();
-        activeSensors.setForeground(Color.WHITE);
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblAlerts = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         btnAddSensor = new javax.swing.JButton();
         btnEditSensor = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblSensors = new javax.swing.JTable();
         btnlogout = new javax.swing.JButton();
         lblTime = new JLabel("");
 
@@ -111,27 +172,11 @@ public class mainUI extends javax.swing.JFrame {
         jLabel6.setFont(new Font("Sitka Heading", Font.BOLD, 14)); // NOI18N
         jLabel6.setText("Total Sensors");
 
-        activeSensors.setFont(new Font("Sitka Heading", Font.BOLD, 14));
-
         jLabel10.setFont(new java.awt.Font("Sitka Display", 1, 36)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Fire Alarm System");
         
-        String[] cols = {"Sensor", "Floor No", "Room No", "CO2 Level", "Smoke Level", "Status"};
-        final DefaultTableModel model = new DefaultTableModel(cols, 0);
-        final DefaultTableModel alertsModel = new DefaultTableModel(cols,0);
-        
-        for (FireAlarmSensor s : this.list) {
-        	Object[] row = {s.get_id(), s.getFloor_no(), s.getRoom_no(), s.getCo2_level(), s.getSmoke_level(), s.isStatus()};
-        	model.addRow(row);
-        	
-        	if( s.getCo2_level() > 5 ) {
-        		alertsModel.addRow(row);
-        	}
-        	else if(s.getSmoke_level() > 5) {
-        		alertsModel.addRow(row);
-        	}
-        }
+      
         
      // ###################         setting clock date          ##############################       
    
@@ -140,60 +185,16 @@ public class mainUI extends javax.swing.JFrame {
            
 			@Override
             public void run() {
+				// format the date time in  dd:MM:yyyy HH:mm:ss
 			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
 		        System.out.println(dateFormat.format(Calendar.getInstance().getTime()) );
 		        String time = dateFormat.format(Calendar.getInstance().getTime()) ;
+		        // set the time in lblTime
 				lblTime.setText(dateFormat.format(Calendar.getInstance().getTime()));
 	       
             }
-        }, 1000, 1000);
-     
-        //   ################################     setting tables values       ########################################### 
-     	
-    	   // set alerts to alert table
-        tblAlerts.setModel(alertsModel);
-        
-        // display all sensors
-        tblSensors.setModel(model);
-        
-        //set active sensors
-        activeSensors.setText(Integer.toString(this.list.size()));
-        
-        //        ##########################              refresh form                 ###############################
-        
-        // refresh form in every 30 seconds
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            private List<FireAlarmSensor> list;
+        }, 1000, 1000); // run per second
 
-			@Override
-            public void run() {
-				Client client = new Client();
-				IFireAlarmService stub = null;
-				stub = client.getStub();
-				FireAlarmSensorMultipleResponse res;
-				try {
-					res = stub.getFireAlarmSensorList();
-				 	this.list = res.getData();
-		         	
-	            	   // set alerts to alert table
-	                tblAlerts.setModel(alertsModel);
-	                
-	                // display all sensors
-	                tblSensors.setModel(model);
-	                
-	                //set active sensors
-	                activeSensors.setText(Integer.toString(this.list.size()));
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	       
-            }
-        }, 30000, 30000);
-        
-        //End of refreshing values         
-   
     jScrollPane1.setViewportView(tblAlerts);
 
     jLabel3.setFont(new java.awt.Font("Sitka Small", 1, 18)); // NOI18N
@@ -230,6 +231,7 @@ public class mainUI extends javax.swing.JFrame {
     btnAddNewUser = new JButton();
     btnAddNewUser.addActionListener(new ActionListener() {
     	public void actionPerformed(ActionEvent e) {
+    		// show registrationUI    		
     		  new registrationUI().setVisible(true);
     	}
     });
@@ -331,13 +333,13 @@ public class mainUI extends javax.swing.JFrame {
     );
     jPanel1.setLayout(jPanel1Layout);
 
-//    if(user.equals("admin@gmail.com")) btnAddSensor.setVisible(true);
-//    else btnAddSensor.setVisible(false);
-//    if(user.equals("admin@gmail.com")) btnEditSensor.setVisible(true);
-//    else btnEditSensor.setVisible(false);
+    if(user.equals("admin@gmail.com")) btnAddSensor.setVisible(true);
+    else btnAddSensor.setVisible(false);
+    if(user.equals("admin@gmail.com")) btnEditSensor.setVisible(true);
+    else btnEditSensor.setVisible(false);
     
-//    if(user.equals("admin@gmail.com")) btnAddNewUser.setVisible(true);
-//    else btnAddNewUser.setVisible(false);
+    if(user.equals("admin@gmail.com")) btnAddNewUser.setVisible(true);
+    else btnAddNewUser.setVisible(false);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     layout.setHorizontalGroup(
@@ -356,18 +358,21 @@ public class mainUI extends javax.swing.JFrame {
 
     protected void btnlogoutActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
+    	// dispose the mainUI and show loginUI again
     	 this.dispose();
     	 new loginUI().setVisible(true);
 	}
 
 	private void btnEditSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSensorActionPerformed
         // TODO add your handling code here:
-		 this.dispose();
+		// show editSensorUI while hiding mainUI    	
+		this.dispose();
         new editSensorUI().setVisible(true);
     }//GEN-LAST:event_btnEditSensorActionPerformed
 
     private void btnAddSensorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSensorActionPerformed
         // TODO add your handling code here:
+    	// show newSensorUI while hiding mainUI    	
     	 this.dispose();
         new newSensorUI().setVisible(true);
     }//GEN-LAST:event_btnAddSensorActionPerformed
@@ -410,7 +415,7 @@ public class mainUI extends javax.swing.JFrame {
        JTable jTable = new JTable();
        jTable.setModel(model);
        
- 
+       user = args[0];
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -428,12 +433,9 @@ public class mainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel activeSensors;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tblAlerts;
-    private static javax.swing.JTable tblSensors;
     private JButton btnAddNewUser;
     private JButton btnlogout;
     private JLabel lblTime;

@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.post('/api/sms', (req, res) => {
-    sendMsj({});
+    //sendMsj({});
     res.send("Success");
 });
 

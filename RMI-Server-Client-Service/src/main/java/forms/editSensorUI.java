@@ -34,7 +34,7 @@ import java.awt.SystemColor;
 
 /**
  *
- * @author Supun Randima
+ *  @author Supun Randima Wijekoon
  */
 public class editSensorUI extends javax.swing.JFrame {
 	
@@ -48,8 +48,9 @@ public class editSensorUI extends javax.swing.JFrame {
      */
     public editSensorUI() {
         
-        
+        // get RMI client
         this.stub = client.getStub();
+        // get alarm sensor details from RMI
         this.getData();
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,7 +58,9 @@ public class editSensorUI extends javax.swing.JFrame {
 
     public void getData() {
     	try {
+    	    // get alarm sensor details from RMI
     		FireAlarmSensorMultipleResponse res = this.stub.getFireAlarmSensorList();
+    		// set alarm list
         	this.list = res.getData();
         	
         	System.out.println(res.getStatus());
@@ -95,25 +98,31 @@ public class editSensorUI extends javax.swing.JFrame {
         		String floorNo = txtFloorNo.getText().toString();
         		String roomNo = txtRoomNo.getText().toString();
         		Boolean status;
+        		
+        		// check status button is clicked or not
         		if(rdbtnActive.isSelected()) {
         			status = true;
         		}else {
         			status = false;
         		}
-//        		Database id
         		
+        		// Database id
         		String uniqueId = fireAlarmSensor.get_id();
         		System.out.println(uniqueId + " " + status +" "+ Integer.parseInt(floorNo));
         		
+        		// get the roomNo and floorNo from inputs
         		int fNo = Integer.parseInt(floorNo.trim());
         		int rNo = Integer.parseInt(roomNo.trim());
         		 
+        		// set the values in fireAlarmSensor model
         		fireAlarmSensor.setFloor_no(fNo);
         		fireAlarmSensor.setRoom_no(rNo);
         		fireAlarmSensor.setStatus(status);
         		
         	    try {
+        	    	// update the new fireAlarmSensor details using RMI server
         	    	FireAlarmSensorSingleResponse response = stub.updateFireAlarmSensor(fireAlarmSensor, uniqueId);
+        	    	// show the response and show success message
         	    	System.out.println(response);
         	    	JOptionPane.showMessageDialog(null, "Succesfully Updated");
 				} catch (RemoteException e) {
@@ -130,21 +139,23 @@ public class editSensorUI extends javax.swing.JFrame {
         		JComboBox c = (JComboBox) arg0.getSource();
         	    Item item = (Item) c.getSelectedItem();
         	    
-//        	    assign selected item         	       	    
-//        	    get values from all sensors list 
+        	    // assign selected item         	       	    
+        	    // get values from all sensors list 
         	    fireAlarmSensor =  list.get(item.getId());
         	    
-//        	    assign values to text field
+        	    //  assign values to text field
         	    txtFloorNo.setText(Integer.toString(fireAlarmSensor.getFloor_no()));
         	    txtRoomNo.setText(Integer.toString(fireAlarmSensor.getRoom_no()));
         	    
         	    String status = "Not Active";
         	    System.out.println(fireAlarmSensor.isStatus() == true);
-        	    if(fireAlarmSensor.isStatus() == true) {
+
+        		// set the connection between btnActive and btnInactive
+        	    if(fireAlarmSensor.isStatus() == true) {	//if status is true make the rdbtnActive selected
         	    	rdbtnInactive.setSelected(false);
         	    	rdbtnActive.setSelected(true);
         	    }
-        	    else {
+        	    else { 	//if status is false make the rdbtninActive selected
         	    	rdbtnActive.setSelected(false);
         	    	rdbtnInactive.setSelected(true);
         	    }
@@ -158,27 +169,31 @@ public class editSensorUI extends javax.swing.JFrame {
         Vector model = new Vector();
     
         for (FireAlarmSensor s : this.list) {
-//        	Object[] row = {s.get_id(), s.getFloor_no(), s.getRoom_no(), s.getCo2_level(), s.getSmoke_level(), s.isStatus()};
+        	// add sensors values in lists sensors
            listSensors.addItem(new Item( index++ , "Floor No: " + s.getFloor_no() + ", Room No: " + s.getRoom_no() ));
         }
         
-      
-//        listSensors.setModel(model);
-        
+
         btnDelete = new javax.swing.JButton();
         btnDelete.addActionListener(new ActionListener() {
+        	// delete a sensor
         	public void actionPerformed(ActionEvent e) {
-        		String uniqueId = fireAlarmSensor.get_id();
+        		// get selected item details
+        		String uniqueId = fireAlarmSensor.get_id();        	
         		
+        		// show message request from user to delete 
         		int result = JOptionPane.showConfirmDialog( null, "Do you want to delete ?",
         		"alert", JOptionPane.OK_CANCEL_OPTION);
         		System.out.println(result);
-        		if(result == 0) {
+        		
+        		if(result == 0) { // if user accepted to delete 
         		
         	    try {
+        	    	// delete selected sensor from list by using RMI server
         	    	FireAlarmSensorSingleResponse response = stub.deleteFireAlarmSensor(uniqueId);
         	    	JOptionPane.showMessageDialog(null, response.getStatus());
         	    	
+        	    	// update sensors list 
         	    	List<FireAlarmSensor> list;
         	    	Client client = new Client();
     				IFireAlarmService stub = null;
@@ -191,7 +206,7 @@ public class editSensorUI extends javax.swing.JFrame {
     			      
     			        Vector model = new Vector();
     			        
-//    			        remove all items in  list
+    			        // remove all items in current list
     			        int itemCount = listSensors.getItemCount();
     			        System.out.println("size"  +itemCount);
     			        int i =0;
@@ -202,14 +217,14 @@ public class editSensorUI extends javax.swing.JFrame {
     			        	listSensors.removeItemAt(i);
     			        	
     			        }
-    			        
+    			        // get new sensors details after deleteing
     			        res = stub.getFireAlarmSensorList();
     				 	list = res.getData();
     				 	System.out.println(list.size());
     				 	
     				 	int index = 0;
     			        for (FireAlarmSensor s : list) {
-//    			        	Object[] row = {s.get_id(), s.getFloor_no(), s.getRoom_no(), s.getCo2_level(), s.getSmoke_level(), s.isStatus()};
+    			        	// add newly updated sensors list values
     			        	System.out.println(index);
     			           listSensors.addItem(new Item( index++ , "Floor No: " + s.getFloor_no() + ", Room No: " + s.getRoom_no() ));
     			        }
@@ -273,7 +288,7 @@ public class editSensorUI extends javax.swing.JFrame {
         jLabel3.setText("Sensor");
 
         listSensors.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-//        listSensors.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         
         
     
@@ -299,7 +314,7 @@ public class editSensorUI extends javax.swing.JFrame {
        
         rdbtnInactive.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		if(rdbtnInactive.isSelected()) {
+        		if(rdbtnInactive.isSelected()) { 	// if rdbtnInctive selected make the rdbtnActive unselected
         			rdbtnActive.setSelected(false);
         		}
         	}
@@ -464,7 +479,7 @@ public class editSensorUI extends javax.swing.JFrame {
     private JRadioButton rdbtnActive;
 }
 
-
+// set selected sensor values in Item model
 class Item
 {
     private int  id;

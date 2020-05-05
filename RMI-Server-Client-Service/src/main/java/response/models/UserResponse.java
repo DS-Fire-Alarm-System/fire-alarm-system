@@ -4,19 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 
 import dtos.FireAlarmSensor;
-import dtos.Registration;
+import dtos.User;
 
-public class RegistrationResponse  implements Serializable {
+// store registration response
+public class UserResponse  implements Serializable {
 
 	private String status;
-	private List<Registration> data;
+	private User data;
 
 	
-	public List<Registration> getData() {
+	public User getData() {
 		return data;
 	}
 
-	public void setData(List<Registration> data) {
+	public void setData(User data) {
 		this.data = data;
 	}
 
@@ -27,6 +28,4 @@ public class RegistrationResponse  implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-
 }

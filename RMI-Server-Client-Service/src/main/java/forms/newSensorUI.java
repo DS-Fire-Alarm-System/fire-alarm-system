@@ -27,7 +27,7 @@ import java.awt.event.ActionEvent;
 
 /**
  *
- * @author Supun Randima
+ * @author Supun Randima Wijekoon
  */
 public class newSensorUI extends javax.swing.JFrame {
 
@@ -39,6 +39,7 @@ public class newSensorUI extends javax.swing.JFrame {
 	 private FireAlarmSensor fireAlarmSensor = new FireAlarmSensor();
 		
     public newSensorUI() {
+    	// get RMI client
         this.stub = client.getStub();
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,6 +69,8 @@ public class newSensorUI extends javax.swing.JFrame {
         rdbtnInactive.setToolTipText("Sensor is in inactive status");
         rdbtnInactive.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		// create radio button connection with other 
+        		// if rdbtnInactive selected make the rdbtnActive unselected
         		if(rdbtnInactive.isSelected()) {
         			rdbtnActive.setSelected(false);
         		}
@@ -84,31 +87,40 @@ public class newSensorUI extends javax.swing.JFrame {
         		String floorNo = txtFloorNo.getText().toString();
         		String roomNo = txtRoomNo.getText().toString();
         		boolean status;
+        		
+        		// check status button is clicked or not
         		if(rdbtnActive.isSelected()) {
+        			// if it is clicked set status true
         			status = true;
         		}else {
+        			// if it is not clicked set status false
         			status = false;
         		}
         		
+        		// check floor no is not empty if it is empty show a message
         		 if(!isEmpty("Floor No", floorNo.trim())){ }
-        		
+        		 
+        		// check room no is not empty if it is empty show a message
         		 if(!isEmpty("Room No", roomNo.trim())) {}
         		 else {
         			 try {
-        			 
+        			    // get floor number and room number
         				int fNo = Integer.parseInt(floorNo.trim());
                 		int rNo = Integer.parseInt(roomNo.trim());
                 		 
+                		// set fire alarm sensor details
                 		fireAlarmSensor.setFloor_no(fNo);
                 		fireAlarmSensor.setRoom_no(rNo);
                 		fireAlarmSensor.setStatus(true);
                 		
-//                		initalized default values in co2 and smoke level
+                		// initalized default values in co2 and smoke level
                 		fireAlarmSensor.setCo2_level(1);
                 		fireAlarmSensor.setSmoke_level(1);
                 		
                 	    try {
+                	    	// create new fire alarm sensor
                 	    	FireAlarmSensorSingleResponse response = stub.createFireAlarmSensor(fireAlarmSensor);
+                	    	// show the message successfully created or not
                 	    	JOptionPane.showMessageDialog(null, response.getStatus());
         				} catch (RemoteException ex) {
         					// TODO Auto-generated catch block
@@ -165,6 +177,8 @@ public class newSensorUI extends javax.swing.JFrame {
        
         rdbtnActive.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		// create radio button connection with other 
+        		// if rdbtnActive selected make the rdbtnInactive unselected
         		if(rdbtnActive.isSelected()) {
         			rdbtnInactive.setSelected(false);
         		}
@@ -258,6 +272,7 @@ public class newSensorUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+    	// redirect to homeUI and dispose this
     	 this.dispose();
          new mainUI().setVisible(true); 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -297,12 +312,14 @@ public class newSensorUI extends javax.swing.JFrame {
         });
     }
     
+    // check empty fields in inputs
     public boolean isEmpty(String name, String value){
         if(value.trim().equals("")){
+        	// if there is empty field show an error message including field name 
             JOptionPane.showMessageDialog(null, name + " Required");
             return false; 
         }
-        else return true;
+        else return true; // if no empty field detected return true
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

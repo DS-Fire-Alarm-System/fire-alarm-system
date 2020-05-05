@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import dtos.FireAlarmSensor;
 
+// store single response
 public class FireAlarmSensorSingleResponse implements Serializable {
 
 	private String status;

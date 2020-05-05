@@ -9,14 +9,17 @@ public class Client implements Serializable {
 
 	private IFireAlarmService stub = null;
 	
+	// initialize stub
 	public Client() {
 		this.setStub();
 	}
 	
+	//get the stub
 	public IFireAlarmService getStub() {
 		return stub;
 	}
 
+	// set the stub 
 	public void setStub() {
 		
 		try {

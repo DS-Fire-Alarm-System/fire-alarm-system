@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const sendSMS = (req, res) => {
     const body = {
-        to: req.body.to,
-        msj: req.body.msj
+        floor: req.body.floor,
+        room: req.body.room
     };
 
     smsFn(body).then((result) => {

@@ -2,8 +2,7 @@ package response.models;
 
 import java.io.Serializable;
 
-// store authentication response message details
-public class AuthResponse implements Serializable {
+public class EmailSmsResponse implements Serializable {
 
 	private String status;
 	private String message;

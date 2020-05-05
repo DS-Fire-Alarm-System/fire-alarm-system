@@ -16,15 +16,15 @@ import java.rmi.RemoteException;
 import java.awt.Color;
 import javax.swing.JTextField;
 import dtos.Auth;
-import dtos.Registration;
+import dtos.User;
 import interfaces.IFireAlarmService;
-import response.models.RegistrationResponse;
+import response.models.UserResponse;
 import rmi.client.Client;
 
 
 /**
  *
- * @author Supun Randima
+ * @author Supun Randima Wijekoon
  */
 public class registrationUI extends javax.swing.JFrame {
 	
@@ -35,8 +35,9 @@ public class registrationUI extends javax.swing.JFrame {
      * Creates new form registrationUI
      */
     public registrationUI() {
-        initComponents();
-        this.stub = client.getStub();
+    	// get RMI client
+    	this.stub = client.getStub();
+        initComponents();        
     }
 
     /**
@@ -243,32 +244,37 @@ public class registrationUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPassword2ActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt)  {//GEN-FIRST:event_btnRegisterActionPerformed
+    	
+    		 // check input is empty show a message
              if(!isEmpty("First Name", txtFirstName.getText())){ }
              if(!isEmpty("Last Name", txtLastName.getText())){ }
              if(!isEmpty("Email Address", txtEmail.getText())){}
              if(!isEmpty("Password", new String(txtPassword1.getPassword()))) {}
              if(!isEmpty("Password", new String(txtPassword2.getPassword())) ){}
-             else if ( checkPassword()    )
-                {
-            	 	Registration reg = new Registration();
+             
+             
+             else if ( checkPassword()    )  // if passwords are matched
+            	 {
+            	 	// create registration model and set values
+            	 	User reg = new User();
             	 	reg.setFirst_name( txtFirstName.getText());
             	 	reg.setLast_name(txtLastName.getText());
             		reg.setEmail(txtEmail.getText());
             		reg.setPassword(new String(txtPassword2.getPassword()));
             		
             	try {
-            	
-            		RegistrationResponse regRes = this.stub.register(reg);
-            		 JOptionPane.showMessageDialog(null,"ss");
+            		// reg the registration model in RMI server
+            		UserResponse regRes = this.stub.register(reg);
             		String response = regRes.getStatus();
-            		 JOptionPane.showMessageDialog(null,response);
-//            		if(response.equals("success")) {
-//            			 JOptionPane.showMessageDialog(null, "Registered Successfully !");
-//                    	 this.dispose();
-//            		}else {
-//            			 JOptionPane.showMessageDialog(null, "Registered Failed !");
-//            		}
-//                   
+            		JOptionPane.showMessageDialog(null,response);
+            		
+            		if(response.equals("success")) {
+            			 JOptionPane.showMessageDialog(null, "Registered Successfully !");
+                    	 this.dispose();
+            		}else {
+            			 JOptionPane.showMessageDialog(null, "Registered Failed !");
+            		}
+            		
             	}catch(Exception e) {
             		System.out.println(e.getMessage());
             	}  
@@ -279,6 +285,7 @@ public class registrationUI extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+    	// close this ui
         this.dispose();
        
     }//GEN-LAST:event_btnCancelActionPerformed
@@ -289,6 +296,7 @@ public class registrationUI extends javax.swing.JFrame {
 
     // check passwords are matching or not
     private boolean checkPassword(){
+    	// get textpassword values
         String password1 = new String(txtPassword1.getPassword()).trim();
         String password2 = new String(txtPassword2.getPassword()).trim();
         //   when password are matching return true
