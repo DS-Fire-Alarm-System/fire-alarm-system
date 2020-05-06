@@ -1,0 +1,11 @@
+Our database is hosted in MongoDB Atlas cloud.
+Go to: https://cloud.mongodb.com/v2/5ea3c148836ea773ddafe095#metrics/replicaSet/5ea3c7f244658176f20ae13b/explorer/test/firealarms/find
+
+Credentials:-
+
+Email: blcchanaka@gmail.com
+Password: dsassignment2
+
+Now you will redirect to our database.
+
+Thank You

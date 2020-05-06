@@ -7,8 +7,8 @@ const mailFn = async (to, from, subject, body) => {
         port: "587",
         secure: false, // true for 465, false for other ports
         auth: {
-            user: "ras@inovaitsys.com", // generated ethereal user
-            pass: "inoras123" // generated ethereal password
+            user: "genrrefashionstore@gmail.com", // generated ethereal user
+            pass: "genrre12345" // generated ethereal password
         }
     });
 

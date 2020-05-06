@@ -1,0 +1,104 @@
+Essetials Needs:-
+1. Node.js
+2. Eclipse
+3. Java development kit 8 (jdk-8u***)
+4. Internet Connection
+
+=========To download Node.js=========
+
+1. Go to:- https://nodejs.org/en/download/
+2. Download LTS (Recommended for most users) version
+3. Then install it
+
+=========*******************==========
+
+
+=========To download Eclipse=========
+
+1. Go to:- https://www.eclipse.org/downloads/
+2. Download and Install it
+
+=========*******************==========
+
+
+=========To download Java development kit 8=========
+
+1. Go to:- https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
+2. Download and Install it
+
+=========*******************==========
+
+
+*****Our database is a hosted database. Refer DBConfig.txt or bottom of this file to login hosted database********
+
+*****To receive emails to your email account. Go to Email-service folder and open index.js file. Then remove "blcchanaka@gmail.com"
+with your email************** 
+
+
+Installation Steps:-
+
+1. Go to REST-service folder. Open a command prompt from that location (as in the video) and type "npm install" and hit enter. Dont use quoted marks just npm install only.
+
+2. Open RMI-Server-Client-Service folder as a project in Eclipse. Then right click on the project in project explorer(Eclipse left side menu) then go to
+Maven -> Update Project (Or press Alt + F5). Then Window will open. Then put a tick on RMI-Server-Client-Service and click ok.
+
+3. Go to web-client folder. Open a command prompt from that location (as in the video) and type "npm install" and hit enter. Dont use quoted marks just npm install only.
+
+4. Go to Email-service folder. Open a command prompt from that location (as in the video) and type "npm install" and hit enter. Dont use quoted marks just npm install only.
+
+5. Go to SMS-service folder. Open a command prompt from that location (as in the video) and type "npm install" and hit enter. Dont use quoted marks just npm install only.
+
+6. Go to Simulate-application folder. Open a command prompt from that location (as in the video) and type "npm install" and hit enter. Dont use quoted marks just npm install only.
+
+
+Running Process (Please do this as given order. You can also refer to the video to this):-
+
+1. Go to REST-service folder. Open a command prompt from that location (as in the video) and type "npm start" and hit enter. Dont use quoted marks just npm start only.
+
+2. Go to RMI-Server-Client-Service folder. Then src->main->java->rmi->server and open a command prompt from that location. Then type without quoted "start rmiregistry"
+and hit enter.
+
+3. In Eclipse, go to src->rmi.server package and run RMIServer class as java application. If it gives you some port error then change the port number in RMIServer class
+as you wish. If you have changed it, then go to rmi.client package and open Client java class. Then changed the port number in the url also (Make sure you have jdk8 version).
+
+4. Then in eclipse, go to forms package and run loginUI.java as java application. It will load desktop application. Login credentials are below.
+
+Login as Admin:-
+
+User name: admin@gmail.com
+Password: 12345
+
+Login as Normal User:-
+
+User name: blcchanaka@gmail.com
+Password: 12345
+
+
+5. Go to Email-service folder. Open a command prompt from that location (as in the video) and type "npm start" and hit enter. Dont use quoted marks just npm start only.
+
+6. Go to SMS-service folder. Open a command prompt from that location (as in the video) and type "npm start" and hit enter. Dont use quoted marks just npm start only.
+
+7. Go to Simulate-application folder. Open a command prompt from that location (as in the video) and type "npm start" and hit enter. Dont use quoted marks just npm start only.
+
+8. Go to web-client folder. Open a command prompt from that location (as in the video) and type "npm start" and hit enter. Dont use quoted marks just npm start only.
+
+
+
+================================================================
+Our database is hosted in MongoDB Atlas cloud.
+Go to: https://cloud.mongodb.com/v2/5ea3c148836ea773ddafe095#metrics/replicaSet/5ea3c7f244658176f20ae13b/explorer/test/firealarms/find
+
+Credentials:-
+
+Email: blcchanaka@gmail.com
+Password: dsassignment2
+
+Now you will redirect to our database.
+
+Thank You
+=================================================================
+
+Thats All!!
+Thank You
+
+
