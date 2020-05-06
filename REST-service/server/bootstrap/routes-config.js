@@ -1,3 +1,4 @@
+// Main Route Files
 import app from './express-config';
 import userRoutes from "../app/routes/user/user.routes";
 import authRoutes from "../app/routes/auth/auth.routes";

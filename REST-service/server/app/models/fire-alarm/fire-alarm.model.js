@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-
+// Fire-alarm model
 const FireAlarmSchema = mongoose.Schema({
     floor_no: {
         type: Number,

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Send Sms function
 const sendSMS = (req, res) => {
     const body = {
         floor: req.body.floor,
@@ -13,7 +14,9 @@ const sendSMS = (req, res) => {
     })
 };
 
+// Sending Ajax request
 const smsFn = (data) => {
+    // Returning Promise
     return new Promise((resolve, reject) => {
         const axiosObject = {
             headers: {
@@ -24,6 +27,7 @@ const smsFn = (data) => {
             data: data
         };
 
+        // Using axios
         axios(axiosObject)
             .then((result) => {
                 resolve(true)

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Send Email function
 const sendEmail = (req, res) => {
     const body = {
         floor: req.body.floor,
@@ -13,7 +14,9 @@ const sendEmail = (req, res) => {
     })
 };
 
+// Sending Ajax request
 const mailFn = (data) => {
+    // Returning Promise
     return new Promise((resolve, reject) => {
         const axiosObject = {
             headers: {
@@ -24,6 +27,7 @@ const mailFn = (data) => {
             data: data
         };
 
+        // Using axios
         axios(axiosObject)
             .then((result) => {
                 resolve(true)

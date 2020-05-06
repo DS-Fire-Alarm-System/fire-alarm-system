@@ -1,18 +1,21 @@
 import { BaseService } from "../BaseService";
 import FireAlarm from "../../models/fire-alarm/fire-alarm.model";
 
-
+// Fire-alarm service
 class FireAlarmService extends BaseService {
     constructor() {
         super(FireAlarm);
     }
 
+    // Updating a fire-alarm
     updateFireAlarm(object, id, cb) {
+        // Find alarm by id
         this.findOne({ _id: id }, (err, result) => {
             if (err) {
                 cb(err);
             } else {
                 if (result) {
+                    // If found do the updating
                     const updatedObject = result;
 
                     if (object.floor_no !== undefined) {

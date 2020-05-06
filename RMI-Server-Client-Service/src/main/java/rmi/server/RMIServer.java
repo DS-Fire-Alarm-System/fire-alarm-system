@@ -10,7 +10,7 @@ import services.FireAlarmServiceImpl;
 
 public class RMIServer extends FireAlarmServiceImpl {
     
-	 static int port = 5099;
+	static int port = 5099;
 	 
     public RMIServer() throws RemoteException {
 		

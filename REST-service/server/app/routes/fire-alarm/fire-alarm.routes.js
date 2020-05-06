@@ -1,7 +1,7 @@
 import express from "express";
 import fireAlarmCtrl from "../../controllers/fire-alarm/fire-alarm.controller";
 
-
+// Fire-alarm routes individually
 const router = express.Router();
 
 router.route('/')

@@ -1,6 +1,6 @@
 import FireAlarmService from "../../services/fire-alarm/FireAlarmService";
 
-
+// Creating a fire-alarm
 const createFireAlarm = (req, res) => {
     const newFireAlarm = {
         floor_no: req.body.floor_no,
@@ -10,6 +10,7 @@ const createFireAlarm = (req, res) => {
         status: req.body.status,
     };
 
+    // Calling service method
     FireAlarmService.create(newFireAlarm, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });
@@ -19,7 +20,9 @@ const createFireAlarm = (req, res) => {
     })
 };
 
+// Getting fire-alarm list
 const getFireAlarmList = (req, res) => {
+    // Calling service method
     FireAlarmService.find({}, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });
@@ -29,7 +32,9 @@ const getFireAlarmList = (req, res) => {
     })
 };
 
+// Get fire-alarm by id
 const getFireAlarmById = (req, res) => {
+    // Calling service method
     FireAlarmService.findOne({ _id: req.params.id }, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });
@@ -39,6 +44,7 @@ const getFireAlarmById = (req, res) => {
     })
 };
 
+// Update fire-alarm
 const updateFireAlarm = (req, res) => {
     const updateFireAlarm = {
         floor_no: req.body.floor_no,
@@ -48,6 +54,7 @@ const updateFireAlarm = (req, res) => {
         status: req.body.status,
     };
 
+    // Calling service method
     FireAlarmService.updateFireAlarm(updateFireAlarm, req.params.id, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });
@@ -57,7 +64,9 @@ const updateFireAlarm = (req, res) => {
     })
 };
 
+// Delete fire-alarm
 const deleteFireAlarm = (req, res) => {
+    // Calling service method
     FireAlarmService.delete({ _id: req.params.id }, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error", data: {} });

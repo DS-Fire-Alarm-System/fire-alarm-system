@@ -5,6 +5,7 @@ import helmet from 'helmet';
 
 const app = express();
 
+// Configure express middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compress());

@@ -1,6 +1,7 @@
 import UserService from "../../services/user/UserService";
 import bcrypt from "bcrypt";
 
+// Registering a User
 const createUser = (req, res) => {
     const newUser = {
         first_name: req.body.first_name,
@@ -9,6 +10,7 @@ const createUser = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 10)
     };
 
+    // Calling service method
     UserService.create(newUser, (err, result) => {
         if (err) {
             return res.status(400).json({ status: "error" });
